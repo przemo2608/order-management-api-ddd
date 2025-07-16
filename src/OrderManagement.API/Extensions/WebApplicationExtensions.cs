@@ -10,9 +10,9 @@ public static class WebApplicationExtensionsjak
     public static WebApplication MapEndpoints(this WebApplication app)
     {
         app.MapPost("/orders", CreateOrderEndpoint.Handle);
-        app.MapPost("/orders/{id}/items", AddItemToOrderEndpoint.Handle);
-        app.MapPut("/orders/{id}/status", UpdateOrderStatusEndpoint.Handle);
-        app.MapGet("/orders/{id}", GetOrderEndpoint.Handle);
+        app.MapPost("/orders/{orderId}/items", AddItemToOrderEndpoint.Handle);
+        app.MapPut("/orders/{orderId}/status", UpdateOrderStatusEndpoint.Handle);
+        app.MapGet("/orders/{orderId}", GetOrderEndpoint.Handle);
 
         app.MapGet("/products", GetAllProductsEndpoint.Handle);
 

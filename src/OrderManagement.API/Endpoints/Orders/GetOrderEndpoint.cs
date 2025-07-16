@@ -1,5 +1,4 @@
 ﻿using MediatR;
-using Microsoft.AspNetCore.Mvc;
 using OrderManagement.API.DTOs.Responses;
 using OrderManagement.Application.DTOs;
 using OrderManagement.Application.Orders.Queries.GetOrderDetails;
@@ -9,10 +8,10 @@ namespace OrderManagement.API.Endpoints.Orders;
 public static class GetOrderEndpoint
 {
     public static async Task<IResult> Handle(
-        [FromRoute] Guid id,
-        [FromServices] IMediator mediator)
+        Guid orderId,
+        IMediator mediator)
     {
-        var query = new GetOrderDetailsQuery(id);
+        var query = new GetOrderDetailsQuery(orderId);
         var orderDto = await mediator.Send(query);
 
         return Results.Ok(MapToResponse(orderDto));
