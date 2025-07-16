@@ -2,23 +2,22 @@
 using OrderManagement.API.DTOs.Requests;
 using OrderManagement.Application.Orders.Commands.CreateOrder;
 
-namespace OrderManagement.API.Endpoints.Orders
+namespace OrderManagement.API.Endpoints.Orders;
+
+public static class CreateOrderEndpoint
 {
-    public static class CreateOrderEndpoint
+    public static async Task<IResult> Handle(
+        CreateOrderRequest request,
+        IMediator mediator,
+        CancellationToken cancellationToken)
     {
-        public static async Task<IResult> Handle(
-            CreateOrderRequest request,
-            IMediator mediator,
-            CancellationToken cancellationToken)
-        {
-            var command = new CreateOrderCommand(
-                request.Street,
-                request.City,
-                request.PostalCode);
+        var command = new CreateOrderCommand(
+            request.Street,
+            request.City,
+            request.PostalCode);
 
-            var orderId = await mediator.Send(command, cancellationToken);
+        var orderId = await mediator.Send(command, cancellationToken);
 
-            return Results.Created($"/orders/{orderId}", new { Id = orderId });
-        }
+        return Results.Created($"/orders/{orderId}", new { Id = orderId });
     }
 }

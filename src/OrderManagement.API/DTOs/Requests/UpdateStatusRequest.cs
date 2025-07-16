@@ -1,4 +1,3 @@
-﻿namespace OrderManagement.API.DTOs.Requests
-{
-    public record UpdateStatusRequest(string Status);
-}
+﻿namespace OrderManagement.API.DTOs.Requests;
+
+public record UpdateStatusRequest(string Status);

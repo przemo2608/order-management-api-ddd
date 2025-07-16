@@ -15,10 +15,12 @@ public class InMemoryProductRepository() : IProductRepository
         return Task.FromResult<IReadOnlyList<Product>>(products);
     }
 
-    public Task<Product?> GetByIdAsync(ProductId id)
+    public Task<Product> GetByIdAsync(ProductId id)
     {
-        _products.TryGetValue(id, out var product);
-        return Task.FromResult(product);
+        if (_products.TryGetValue(id, out var product))
+            return Task.FromResult(product);
+
+        throw new KeyNotFoundException($"Product with ID {id} not found");
     }
 
     public Task InitializeAsync(IEnumerable<Product> products)
