@@ -1,4 +1,4 @@
-﻿using OrderManagement.Domain.Entities;
+﻿using OrderManagement.Domain.Aggregates;
 using OrderManagement.Domain.ValueObjects;
 
 namespace OrderManagement.Domain.Repositories;
