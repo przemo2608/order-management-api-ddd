@@ -8,7 +8,7 @@ namespace OrderManagement.Domain.Aggregates;
 
 public class Order(Address shippingAddress) : Entity<OrderId>(OrderId.New())
 {
-    private readonly List<OrderItem> _items = new();
+    private readonly List<OrderItem> _items = [];
 
     public DateTime CreatedDate { get; } = DateTime.UtcNow;
     public DateTime? LastModifiedDate { get; private set; }

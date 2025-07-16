@@ -5,7 +5,7 @@ using System.Collections.Concurrent;
 
 namespace OrderManagement.Infrastructure.Repositories;
 
-public class InMemoryProductRepository : IProductRepository
+public class InMemoryProductRepository() : IProductRepository
 {
     private readonly ConcurrentDictionary<ProductId, Product> _products = new();
 
@@ -21,12 +21,13 @@ public class InMemoryProductRepository : IProductRepository
         return Task.FromResult(product);
     }
 
-    public void AddInitialProducts(IEnumerable<Product> products)
+    public Task InitializeAsync(IEnumerable<Product> products)
     {
         foreach (var product in products)
         {
             if (!_products.TryAdd(product.Id, product))
                 throw new InvalidOperationException($"Product with ID {product.Id} already exists");
         }
+        return Task.CompletedTask;
     }
 }

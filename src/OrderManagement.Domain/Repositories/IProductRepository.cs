@@ -5,7 +5,7 @@ namespace OrderManagement.Domain.Repositories;
 
 public interface IProductRepository
 {
-    // Tylko metody do odczytu - produkty nie są modyfikowane
+    Task InitializeAsync(IEnumerable<Product> products);
     Task<IReadOnlyList<Product>> GetAllAsync();
     Task<Product?> GetByIdAsync(ProductId id);
 }
