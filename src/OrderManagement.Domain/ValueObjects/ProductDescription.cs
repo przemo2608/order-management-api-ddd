@@ -10,4 +10,7 @@ public sealed class ProductDescription(string value) : ValueObject
     {
         yield return Value;
     }
+
+    public static implicit operator string(ProductDescription name) => name.Value;
+    public static implicit operator ProductDescription(string value) => new(value);
 }

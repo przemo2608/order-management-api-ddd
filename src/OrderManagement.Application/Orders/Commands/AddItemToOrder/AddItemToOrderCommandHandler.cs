@@ -1,22 +1,15 @@
 ﻿using MediatR;
-using OrderManagement.Domain.Repositories;
-using OrderManagement.Domain.ValueObjects;
+using OrderManagement.Domain.Interfaces;
+using OrderManagement.Domain.Services.Models;
 
 namespace OrderManagement.Application.Orders.Commands.AddItemToOrder;
 
-public class AddItemToOrderCommandHandler(
-    IOrderRepository orderRepository,
-    IProductRepository productRepository) : IRequestHandler<AddItemToOrderCommand>
+public class AddItemToOrderCommandHandler(IOrderService orderService) : IRequestHandler<AddItemToOrderCommand>
 {
-    public async Task Handle(AddItemToOrderCommand request, CancellationToken cancellationToken)
+    public async Task Handle(AddItemToOrderCommand command, CancellationToken cancellationToken)
     {
-        var order = await orderRepository.GetByIdAsync(new OrderId(request.OrderId));
-        var product = await productRepository.GetByIdAsync(new ProductId(request.ProductId));
+        var model = new AddItemToOrderModel(command.OrderId, command.ProductId, command.Quantity);
 
-        if (product is null)
-            throw new KeyNotFoundException($"Product with ID {request.ProductId} not found");
-
-        order.AddItem(product, new Quantity(request.Quantity));
-        await orderRepository.UpdateAsync(order);
+        await orderService.AddItemToOrderAsync(model, cancellationToken).ConfigureAwait(false);
     }
 }

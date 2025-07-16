@@ -1,19 +1,19 @@
 ﻿using MediatR;
-using OrderManagement.Domain.Aggregates;
-using OrderManagement.Domain.Repositories;
-using OrderManagement.Domain.ValueObjects;
+using OrderManagement.Domain.Interfaces;
+using OrderManagement.Domain.Services.Models;
 
 namespace OrderManagement.Application.Orders.Commands.CreateOrder;
 
-public class CreateOrderCommandHandler(
-    IOrderRepository orderRepository) : IRequestHandler<CreateOrderCommand, Guid>
+public class CreateOrderCommandHandler(IOrderService orderService) : IRequestHandler<CreateOrderCommand, Guid>
 {
-    public async Task<Guid> Handle(CreateOrderCommand request, CancellationToken cancellationToken)
+    public async Task<Guid> Handle(CreateOrderCommand command, CancellationToken cancellationToken)
     {
-        var address = new Address(request.Street, request.City, request.PostalCode);
-        var order = new Order(address);
+        var model = new CreateOrderModel(command.Street, command.City, command.PostalCode);
 
-        await orderRepository.AddAsync(order);
-        return order.Id.Value;
+        var createdOrder = await orderService
+            .CreateOrderAsync(model, cancellationToken)
+            .ConfigureAwait(false);
+
+        return createdOrder.Id.Value;
     }
 }

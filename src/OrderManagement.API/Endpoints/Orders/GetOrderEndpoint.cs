@@ -13,9 +13,9 @@ namespace OrderManagement.API.Endpoints.Orders
             [FromServices] IMediator mediator)
         {
             var query = new GetOrderDetailsQuery(id);
-            var orderDto = await mediator.Send(query); // Uzyskujemy OrderDto z warstwy aplikacji
+            var orderDto = await mediator.Send(query);
 
-            return Results.Ok(MapToResponse(orderDto)); // Mapujemy OrderDto na OrderResponse
+            return Results.Ok(MapToResponse(orderDto));
         }
 
         private static OrderResponse MapToResponse(OrderDto dto)

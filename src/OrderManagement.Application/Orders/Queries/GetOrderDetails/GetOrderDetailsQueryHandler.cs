@@ -9,7 +9,8 @@ public class GetOrderDetailsQueryHandler(IOrderRepository orderRepository) : IRe
 {
     public async Task<OrderDto> Handle(GetOrderDetailsQuery request, CancellationToken cancellationToken)
     {
-        var order = await orderRepository.GetByIdAsync(new OrderId(request.OrderId));
+        var order = await orderRepository.GetByIdAsync(new OrderId(request.OrderId), cancellationToken);
+
         return OrderDto.FromOrder(order);
     }
 }

@@ -1,18 +1,15 @@
 ﻿using MediatR;
-using OrderManagement.Domain.Enums;
-using OrderManagement.Domain.Repositories;
-using OrderManagement.Domain.ValueObjects;
+using OrderManagement.Domain.Interfaces;
+using OrderManagement.Domain.Services.Models;
 
 namespace OrderManagement.Application.Orders.Commands.UpdateOrderStatus;
 
-public class UpdateOrderStatusCommandHandler(IOrderRepository orderRepository) : IRequestHandler<UpdateOrderStatusCommand>
+public class UpdateOrderStatusCommandHandler(IOrderService orderService) : IRequestHandler<UpdateOrderStatusCommand>
 {
-    public async Task Handle(UpdateOrderStatusCommand request, CancellationToken cancellationToken)
+    public async Task Handle(UpdateOrderStatusCommand command, CancellationToken cancellationToken)
     {
-        var order = await orderRepository.GetByIdAsync(new OrderId(request.OrderId));
-        var status = Enum.Parse<OrderStatus>(request.Status);
+        var model = new UpdateOrderStatusModel(command.OrderId, command.Status);
 
-        order.ChangeStatus(status);
-        await orderRepository.UpdateAsync(order);
+        await orderService.UpdateOrderStatusAsync(model, cancellationToken).ConfigureAwait(false);
     }
 }

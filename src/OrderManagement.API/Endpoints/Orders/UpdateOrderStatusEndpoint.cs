@@ -1,5 +1,4 @@
 ﻿using MediatR;
-using Microsoft.AspNetCore.Mvc;
 using OrderManagement.API.DTOs.Requests;
 using OrderManagement.Application.Orders.Commands.UpdateOrderStatus;
 
@@ -8,15 +7,17 @@ namespace OrderManagement.API.Endpoints.Orders
     public static class UpdateOrderStatusEndpoint
     {
         public static async Task<IResult> Handle(
-            [FromRoute] Guid id,
-            [FromBody] UpdateStatusRequest request,
-            [FromServices] IMediator mediator)
+            Guid orderId,
+            UpdateStatusRequest request,
+            IMediator mediator,
+            CancellationToken cancellationToken)
         {
             var command = new UpdateOrderStatusCommand(
-                OrderId: id,
+                OrderId: orderId,
                 Status: request.Status);
 
-            await mediator.Send(command);
+            await mediator.Send(command, cancellationToken);
+
             return Results.Ok();
         }
     }

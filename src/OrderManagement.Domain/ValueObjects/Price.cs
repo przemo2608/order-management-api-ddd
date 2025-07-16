@@ -19,4 +19,13 @@ public sealed class Price : ValueObject
     {
         yield return Value;
     }
+
+    public static implicit operator decimal(Price price) => price.Value;
+    public static implicit operator Price(decimal value) => new(value);
+
+    public static Price operator +(Price a, Price b) => new(a.Value + b.Value);
+    public static Price operator -(Price a, Price b) => new(a.Value - b.Value);
+    public static Price operator *(Price price, Quantity quantity) => new(price.Value * quantity.Value);
+
+    public override string ToString() => Value.ToString("C");
 }

@@ -3,6 +3,7 @@ using Microsoft.AspNetCore.Mvc;
 using Microsoft.OpenApi.Models;
 using OrderManagement.API.Extensions;
 using OrderManagement.Application.Configuration;
+using OrderManagement.Domain.Configuration;
 using OrderManagement.Domain.Exceptions;
 using OrderManagement.Infrastructure.Configuration;
 
@@ -10,6 +11,7 @@ var builder = WebApplication.CreateBuilder(args);
 
 
 builder.Services
+    .AddDomain()
     .AddApplication()
     .AddInfrastructure();
 
