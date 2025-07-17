@@ -11,7 +11,8 @@ public sealed class Customer(string name, string surname) : ValueObject
 
     protected override IEnumerable<object> GetEqualityComponents()
     {
-        throw new NotImplementedException();
+        yield return Name;
+        yield return Surname;
     }
 
     public void Deconstruct(out string name, out string surname)
