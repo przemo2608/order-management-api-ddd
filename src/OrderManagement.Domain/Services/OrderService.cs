@@ -13,7 +13,14 @@ public class OrderService(
 {
     public async Task<Order> CreateOrderAsync(CreateOrderModel model, CancellationToken cancellationToken)
     {
-        var order = new Order(new(model.Street, model.City, model.PostalCode));
+        var product = await productRepository
+            .GetByIdAsync(model.ProductId)
+            .ConfigureAwait(false);
+
+        var order = new Order(
+            new(model.Street, model.City, model.PostalCode),
+            new(model.CustomerName, model.CustomerSurname),
+            new(product!, model.Quantity));
 
         await orderRepository.AddAsync(order, cancellationToken).ConfigureAwait(false);
 

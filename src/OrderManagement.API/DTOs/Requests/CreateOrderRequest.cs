@@ -3,4 +3,8 @@
 public record CreateOrderRequest(
 string Street,
 string City,
-string PostalCode);
+string PostalCode,
+string CustomerName,
+string CustomerSurname,
+Guid ProductId,
+int Quantity);

@@ -14,7 +14,11 @@ public static class CreateOrderEndpoint
         var command = new CreateOrderCommand(
             request.Street,
             request.City,
-            request.PostalCode);
+            request.PostalCode,
+            request.CustomerName,
+            request.CustomerSurname,
+            request.ProductId,
+            request.Quantity);
 
         var orderId = await mediator.Send(command, cancellationToken);
 

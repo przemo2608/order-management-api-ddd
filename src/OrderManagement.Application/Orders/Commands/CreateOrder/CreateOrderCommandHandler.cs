@@ -8,7 +8,14 @@ public class CreateOrderCommandHandler(IOrderService orderService) : IRequestHan
 {
     public async Task<Guid> Handle(CreateOrderCommand command, CancellationToken cancellationToken)
     {
-        var model = new CreateOrderModel(command.Street, command.City, command.PostalCode);
+        var model = new CreateOrderModel(
+            command.Street,
+            command.City,
+            command.PostalCode,
+            command.CustomerName,
+            command.CustomerSurname,
+            command.ProductId,
+            command.Quantity);
 
         var createdOrder = await orderService
             .CreateOrderAsync(model, cancellationToken)

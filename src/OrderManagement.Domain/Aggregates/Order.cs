@@ -6,15 +6,22 @@ using OrderManagement.Domain.ValueObjects;
 
 namespace OrderManagement.Domain.Aggregates;
 
-public class Order(Address shippingAddress) : Entity<OrderId>(OrderId.New())
+public class Order(Address shippingAddress, Customer customer, OrderItem item) : AggregateRoot<OrderId>(OrderId.New())
 {
-    private readonly List<OrderItem> _items = [];
+    private readonly List<OrderItem> _items = [item];
 
     public DateTime CreatedDate { get; } = DateTime.UtcNow;
+
     public DateTime? LastModifiedDate { get; private set; }
+
     public OrderStatus Status { get; private set; } = OrderStatus.Draft;
+
     public Address ShippingAddress { get; private set; } = shippingAddress;
+
+    public Customer Customer { get; private set; } = customer;
+
     public IReadOnlyCollection<OrderItem> Items => _items.AsReadOnly();
+
     public Price TotalPrice => new(Items.Sum(item => item.TotalPrice.Value));
 
     public void AddItem(Product product, Quantity quantity)
@@ -36,33 +43,10 @@ public class Order(Address shippingAddress) : Entity<OrderId>(OrderId.New())
         LastModifiedDate = DateTime.UtcNow;
     }
 
-    public void RemoveItem(ProductId productId)
-    {
-        CheckDraftStatus();
-
-        var item = _items.FirstOrDefault(i => i.ProductId == productId);
-        if (item == null)
-            throw new DomainException("Product not found in order");
-
-        _items.Remove(item);
-        LastModifiedDate = DateTime.UtcNow;
-    }
-
-    public void UpdateShippingAddress(Address newAddress)
-    {
-        CheckDraftStatus();
-        ShippingAddress = newAddress;
-        LastModifiedDate = DateTime.UtcNow;
-    }
-
     public void ChangeStatus(OrderStatus newStatus)
     {
-        // Walidacja przejść statusów
-        if (Status == OrderStatus.Paid && newStatus == OrderStatus.Cancelled)
-            throw new DomainException("Cannot cancel paid order");
-
-        if (newStatus == OrderStatus.Submitted && !_items.Any())
-            throw new DomainException("Cannot submit empty order");
+        if (Status == OrderStatus.Paid || Status == OrderStatus.Cancelled)
+            throw new DomainException("Cannot change paid or cancelled order");
 
         Status = newStatus;
         LastModifiedDate = DateTime.UtcNow;

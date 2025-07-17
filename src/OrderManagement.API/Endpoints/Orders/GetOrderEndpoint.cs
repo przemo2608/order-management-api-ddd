@@ -12,6 +12,7 @@ public static class GetOrderEndpoint
         IMediator mediator)
     {
         var query = new GetOrderDetailsQuery(orderId);
+
         var orderDto = await mediator.Send(query);
 
         return Results.Ok(MapToResponse(orderDto));
@@ -24,6 +25,8 @@ public static class GetOrderEndpoint
             CreatedDate: dto.CreatedDate,
             LastModifiedDate: dto.LastModifiedDate,
             Status: dto.Status,
+            CustomerName: dto.CustomerName,
+            CustomerSurname: dto.CustomerSurname,
             Street: dto.Street,
             City: dto.City,
             PostalCode: dto.PostalCode,
