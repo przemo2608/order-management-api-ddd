@@ -13,8 +13,8 @@ public static class UpdateOrderStatusEndpoint
         CancellationToken cancellationToken)
     {
         var command = new UpdateOrderStatusCommand(
-            OrderId: orderId,
-            Status: request.Status);
+            orderId,
+            request.Status);
 
         await mediator.Send(command, cancellationToken);
 

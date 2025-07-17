@@ -11,7 +11,8 @@ public static class GetAllProductsEndpoint
     public static async Task<IResult> Handle([FromServices] IMediator mediator)
     {
         var query = new GetAllProductsQuery();
-        var productDtos = await mediator.Send(query); // Uzyskujemy listę ProductDto
+
+        var productDtos = await mediator.Send(query);
 
         return Results.Ok(productDtos.Select(MapToResponse));
     }

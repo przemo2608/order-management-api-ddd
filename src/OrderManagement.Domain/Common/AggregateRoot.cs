@@ -1,7 +1,6 @@
-﻿namespace OrderManagement.Domain.Common
+﻿namespace OrderManagement.Domain.Common;
+
+public abstract class AggregateRoot<TId>(TId id)
 {
-    public abstract class AggregateRoot<TId>(TId id)
-    {
-        public TId Id { get; protected set; } = id;
-    }
+    public TId Id { get; protected set; } = id;
 }

@@ -8,7 +8,6 @@ public static class DependencyInjection
 {
     public static IServiceCollection AddInfrastructure(this IServiceCollection services)
     {
-        // Rejestracja repozytoriów jako singletonów (stan przechowywany w pamięci)
         services.AddSingleton<IOrderRepository, InMemoryOrderRepository>();
         services.AddSingleton<IProductRepository, InMemoryProductRepository>();
 

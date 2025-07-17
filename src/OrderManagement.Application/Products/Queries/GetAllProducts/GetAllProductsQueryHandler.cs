@@ -6,7 +6,7 @@ namespace OrderManagement.Application.Products.Queries.GetAllProducts;
 
 public class GetAllProductsQueryHandler(IProductService productService) : IRequestHandler<GetAllProductsQuery, IEnumerable<ProductDto>>
 {
-    public async Task<IEnumerable<ProductDto>> Handle(GetAllProductsQuery request, CancellationToken cancellationToken)
+    public async Task<IEnumerable<ProductDto>> Handle(GetAllProductsQuery query, CancellationToken cancellationToken)
     {
         var products = await productService
             .GetAllAsync(cancellationToken)

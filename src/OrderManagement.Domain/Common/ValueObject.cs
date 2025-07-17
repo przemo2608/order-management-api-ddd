@@ -6,6 +6,7 @@ public abstract class ValueObject
     {
         if (ReferenceEquals(left, null) ^ ReferenceEquals(right, null))
             return false;
+
         return ReferenceEquals(left, null) || left.Equals(right);
     }
 
@@ -18,12 +19,5 @@ public abstract class ValueObject
 
         var other = (ValueObject)obj;
         return GetEqualityComponents().SequenceEqual(other.GetEqualityComponents());
-    }
-
-    public override int GetHashCode()
-    {
-        return GetEqualityComponents()
-            .Select(x => x?.GetHashCode() ?? 0)
-            .Aggregate((x, y) => x ^ y);
     }
 }
